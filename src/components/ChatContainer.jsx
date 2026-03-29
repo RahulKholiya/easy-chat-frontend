@@ -67,8 +67,8 @@ const ChatContainer = () => {
       <ChatHeader />
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {Array.isArray(messages) &&
-  messages.map((message) => {
+        
+        {(Array.isArray(messages) ? messages : []).map((message) => {
           
           console.log("SENDER:", message.senderId); 
 

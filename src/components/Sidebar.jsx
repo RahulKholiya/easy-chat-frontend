@@ -85,7 +85,7 @@ const Sidebar = () => {
         <div>
           <b><h3 className="text-xs px-3 text-zinc-400">GROUPS</h3></b>
 
-          {groups.map((group) => (
+          {(Array.isArray(groups) ? groups : []).map((group) => (
             <button
               key={group._id}
               onClick={() => {
@@ -110,7 +110,7 @@ const Sidebar = () => {
         </div>
 
         {/* USERS */}
-        {filteredUsers.map((user) => {
+        {(Array.isArray(filteredUsers) ? filteredUsers : []).map((user) => {
           const isOnline = onlineUsers.includes(user._id);
           const isSelected = selectedUser?._id === user._id;
 

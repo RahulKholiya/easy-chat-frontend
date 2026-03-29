@@ -44,7 +44,7 @@ const CreateGroupModal = ({ onClose }) => {
 
         {/* Users */}
         <div className="space-y-2">
-          {users.map((user) => (
+          {(Array.isArray(users) ? users : []).map((user) => (
             <label
               key={user._id}
               className="flex items-center gap-2 cursor-pointer"
