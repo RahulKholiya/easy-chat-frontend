@@ -56,17 +56,18 @@ export const useAuthStore = create((set, get) => ({
       set({ isLoggingIn: false });
     }
   },
+
   updateProfile: async (data) => {
-  set({ isUpdatingProfile: true });
-  try {
-    const res = await axiosInstance.put("/auth/update-profile", data);
-    set({ authUser: res.data });
-  } catch (err) {
+    set({ isUpdatingProfile: true });
+    try {
+      const res = await axiosInstance.put("/auth/update-profile", data);
+      set({ authUser: res.data });
+    } catch (err) {
       toast.error(err.response?.data?.message);
-  } finally {
-    set({ isUpdatingProfile: false });
-  }
-},
+    } finally {
+      set({ isUpdatingProfile: false });
+    }
+  },
 
   logout: async () => {
     await axiosInstance.post("/auth/logout");
@@ -79,17 +80,20 @@ export const useAuthStore = create((set, get) => ({
     const { authUser } = get();
     if (!authUser || get().socket?.connected) return;
 
-    const socket = io(BASE_URL, {
-      query: { userId: authUser._id },
-    });
+    ```
+const socket = io(BASE_URL, {
+  query: { userId: authUser._id },
+});
 
-    socket.connect();
+socket.connect();
 
-    socket.on("getOnlineUsers", (users) => {
-      set({ onlineUsers: users });
-    });
+socket.on("getOnlineUsers", (users) => {
+  set({ onlineUsers: users });
+});
 
-    set({ socket });
+set({ socket });
+```
+
   },
 
   disconnectSocket: () => {
