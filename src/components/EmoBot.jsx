@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 const EmoBot = () => {
     const [open, setOpen] = useState(false);
     const [question, setQuestion] = useState("");
+    const API = import.meta.env.VITE_API_URL;
     const [messages, setMessages] = useState([
         {
             role: "bot",
@@ -23,37 +24,40 @@ Ask me anything `,
     const [loading, setLoading] = useState(false);
 
     const askAI = async () => {
-  if (!question.trim()) return;
+        if (!question.trim()) return;
 
-  const userMsg = { role: "user", text: question };
-  setMessages((prev) => [...prev, userMsg]);
-  setQuestion("");
-  setLoading(true);
+        const userMsg = { role: "user", text: question };
+        setMessages((prev) => [...prev, userMsg]);
+        setQuestion("");
+        setLoading(true);
 
-  try {
-    const res = await axios.post("/api/ai", {
-      prompt: question,
-    });
+        try {
+            const res = await axios.post(
+                `${import.meta.env.VITE_API_URL}/api/ai`,
+                {
+                    prompt: question,
+                }
+            );
 
-    const botMsg = {
-      role: "bot",
-      text: res.data.answer || "No response",
+            const botMsg = {
+                role: "bot",
+                text: res.data.answer || "No response",
+            };
+
+            setMessages((prev) => [...prev, botMsg]);
+        } catch (err) {
+            console.log(err.response?.data || err.message);
+
+            const botMsg = {
+                role: "bot",
+                text: "⚠️ AI is currently unavailable",
+            };
+
+            setMessages((prev) => [...prev, botMsg]);
+        } finally {
+            setLoading(false);
+        }
     };
-
-    setMessages((prev) => [...prev, botMsg]);
-  } catch (err) {
-    console.log(err.response?.data || err.message);
-
-    const botMsg = {
-      role: "bot",
-      text: "⚠️ AI is currently unavailable",
-    };
-
-    setMessages((prev) => [...prev, botMsg]);
-  } finally {
-    setLoading(false);
-  }
-};
 
     const copyText = (text) => {
         navigator.clipboard.writeText(text);

@@ -47,31 +47,61 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={authUser ? <HomePage /> : <Navigate to="/login" />}
+          element={
+            authUser && authUser._id ? (
+              <HomePage />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
 
         <Route
           path="/login"
-          element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+          element={
+            !authUser || !authUser._id ? (
+              <LoginPage />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
 
         <Route
           path="/signup"
-          element={!authUser ? <SignUpPage /> : <Navigate to="/" />}
+          element={
+            !authUser || !authUser._id ? (
+              <SignUpPage />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
 
         <Route
           path="/settings"
-          element={authUser ? <SettingsPage /> : <Navigate to="/login" />}
+          element={
+            authUser && authUser._id ? (
+              <SettingsPage />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
 
         <Route
           path="/profile"
-          element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
+          element={
+            authUser && authUser._id ? (
+              <ProfilePage />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
       </Routes>
 
-      
+
       {/* EMO */}
       {!hideOnAuth && authUser && (
         <div className=" w-20 md:w-24 fixed top-6 right-6 z-50">
