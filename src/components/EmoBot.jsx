@@ -96,7 +96,7 @@ Ask me anything `,
 
                     {/* MESSAGES */}
                     <div className="flex-1 p-3 overflow-y-auto max-h-80 space-y-2">
-                        {messages.map((msg, i) => (
+                        {messages?.map((msg, i) => (
                             <div
                                 key={i}
                                 className={`p-2 rounded-lg text-sm ${msg.role === "user"
