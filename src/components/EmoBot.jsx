@@ -33,11 +33,11 @@ Ask me anything `,
 
         try {
             const res = await axios.post(
-                `${import.meta.env.VITE_API_URL}/api/ai`,
-                {
-                    prompt: question,
-                }
-            );
+  `${import.meta.env.VITE_API_URL}/api/ai`,
+  {
+    prompt: question,
+  }
+);
 
             const botMsg = {
                 role: "bot",
