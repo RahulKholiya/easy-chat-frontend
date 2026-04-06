@@ -85,10 +85,15 @@ export const useChatStore = create((set, get) => ({
           ? msg.senderId._id
           : msg.senderId;
 
-      const isUserChat =
-        selectedUser &&
-        (senderId === selectedUser._id ||
-          msg.receiverId === selectedUser._id);
+      const receiverId =
+  typeof msg.receiverId === "object"
+    ? msg.receiverId?._id
+    : msg.receiverId;
+
+const isUserChat =
+  selectedUser &&
+  (senderId === selectedUser._id ||
+    receiverId === selectedUser._id);
 
       const isGroupChat =
         selectedGroup && msg.groupId === selectedGroup._id;
