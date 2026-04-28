@@ -8,7 +8,7 @@ import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { formatMessageTime } from "../lib/utils";
-
+import { decryptImage } from "../lib/imageCrypto";
 const ChatContainer = () => {
   const {
     messages,
@@ -113,12 +113,35 @@ const ChatContainer = () => {
                 }`}
               >
                 {message.image && (
-                  <img
-                    src={message.image}
-                    alt="attachment"
-                    className="sm:max-w-[200px] rounded-md mb-2"
-                  />
-                )}
+  (() => {
+    try {
+      // 🔥 if encrypted
+      if (message.image.startsWith("U2FsdGVk")) {
+        const blob = decryptImage(message.image);
+        const url = URL.createObjectURL(blob);
+
+        return (
+          <img
+            src={url}
+            alt="attachment"
+            className="sm:max-w-[200px] rounded-md mb-2"
+          />
+        );
+      }
+
+      // normal image (old messages)
+      return (
+        <img
+          src={message.image}
+          alt="attachment"
+          className="sm:max-w-[200px] rounded-md mb-2"
+        />
+      );
+    } catch {
+      return <span>❌ Failed to load image</span>;
+    }
+  })()
+)}
 
                 {message.audio && (
                   <audio controls className="mb-2">
