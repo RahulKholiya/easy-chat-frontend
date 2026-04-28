@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { useGroupStore } from "../store/useGroupStore";
-
+import { encryptImage } from "../lib/imageCrypto";
 import { Image, Send, X, Mic } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -80,13 +80,23 @@ const MessageInput = () => {
     if (!text.trim() && !imagePreview && !audioBlob) return;
 
     try {
-      await sendMessage({
-        text: text.trim(),
-        image: imagePreview,
-        audio: audioBlob,
-        groupId: selectedGroup?._id,
-      });
+      let encryptedImage = null;
 
+if (imagePreview) {
+  // convert base64 → file → encrypt
+  const res = await fetch(imagePreview);
+  const blob = await res.blob();
+  const file = new File([blob], "image.png");
+
+  encryptedImage = await encryptImage(file);
+}
+
+await sendMessage({
+  text: text.trim(),
+  image: encryptedImage, // 🔥 encrypted instead of raw
+  audio: audioBlob,
+  groupId: selectedGroup?._id,
+});
       setText("");
       setImagePreview(null);
       setAudioBlob(null);
