@@ -140,7 +140,7 @@ await sendMessage({
           <input
             type="text"
             className="w-full input input-bordered"
-            placeholder="Type message or @ai..."
+            placeholder="Type message..."
             value={text}
             onChange={(e) => {
               setText(e.target.value);
